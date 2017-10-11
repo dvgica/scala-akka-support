@@ -7,7 +7,13 @@ import org.slf4j.Logger
 trait LoggingDirectives {
   import akka.http.scaladsl.server.Directives._
 
-  def logRequestAndResult: Directive0 = {
+  /**
+    * This directive logs all HTTP requests and results.
+    *
+    * You might place it near the root of your routing tree. Note that you should handle 404s and 500s lower in the routing tree
+    * if you want to see them logged. See [[GenericErrorHandling]] for useful handlers.
+    */
+  def logRequestAndResponse: Directive0 = {
     extractRequestContext.flatMap { ctx =>
       val req = ctx.request
       log.info(s"Received request: ${req.method.value} ${req.uri}")

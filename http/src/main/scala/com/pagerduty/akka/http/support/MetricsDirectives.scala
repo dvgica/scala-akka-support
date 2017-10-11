@@ -8,6 +8,14 @@ import org.slf4j.Logger
 trait MetricsDirectives {
   import akka.http.scaladsl.server.directives.BasicDirectives._
 
+  /**
+    * This directive emits the response time using metrics-api.
+    *
+    * You might place it near the root of your routing tree to time all HTTP responses.
+    *
+    * @param metricName The name of the metric to emit (it's emitted as a histogram)
+    * @param tags Any additional tags to include with the metric
+    */
   def emitResponseTime(metricName: String, tags: (String, String)*): Directive0 = {
     extractRequestContext.flatMap { ctx =>
       val stopwatch = Stopwatch.start()
@@ -19,6 +27,16 @@ trait MetricsDirectives {
     }
   }
 
+  /**
+    * This directive increments a metrics-api counter for every request. It tags each increment with the response code
+    * and any error type.
+    *
+    * You might place this near the root of your routing tree to count all HTTP requests. Note that you should handle exceptions
+    * and 404s lower in the tree if you want this directive to emit metrics for them. See [[GenericErrorHandling]] for useful handlers.
+    *
+    * @param metricName The name of the metric to increment
+    * @param tags Any additional tags to include on the increment
+    */
   def emitRequestCount(metricName: String, tags: (String, String)*): Directive0 = {
     mapRouteResult {
       case result: Complete =>

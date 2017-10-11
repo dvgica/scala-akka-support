@@ -4,7 +4,7 @@
 
 This library is a collection of useful additions to the Akka ecosystem. Specifically, it contains the following:
 
- - A few [logging](http/src/main/scala/com/pagerduty/akka/http/support/LoggingDirectives.scala) and [metrics collection](http/src/main/scala/com/pagerduty/akka/http/support/MetricsDirectives.scala) directives for Akka HTTP
+ - A few [logging](http/src/main/scala/com/pagerduty/akka/http/support/LoggingDirectives.scala), [metrics collection](http/src/main/scala/com/pagerduty/akka/http/support/MetricsDirectives.scala), and [error handling](http/src/main/scala/com/pagerduty/akka/http/support/GenericErrorHandling.scala) for Akka HTTP
 
 ## Sub-Modules
 
