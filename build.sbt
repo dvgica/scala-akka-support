@@ -5,7 +5,11 @@ lazy val sharedSettings = Seq(
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html")),
   bintrayOrganization := Some("pagerduty"),
   bintrayRepository := "oss-maven",
-  publishMavenStyle := true
+  publishMavenStyle := true,
+  resolvers := Seq(
+    "bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
+    Resolver.defaultLocal
+  )
 )
 
 lazy val http = (project in file("http")).
