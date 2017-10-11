@@ -28,14 +28,17 @@ trait MetricsDirectives {
           case i if i >= 500 && i <= 599 => "server"
           case _ => "none"
         }
-        val augmentedTags = tags ++ Seq(("response_code", statusCode.toString),
-          ("response_error_type", responseErrorType))
+        val augmentedTags = tags ++ Seq(
+          ("response_code", statusCode.toString),
+          ("response_error_type", responseErrorType)
+        )
         metrics.increment(metricName, augmentedTags: _*)
         result
       case result: Rejected =>
         log.warn("Response code metric not emitted because it was not known yet")
         log.warn(
-          "If you want to see a response code emitted here, ensure that exceptions/rejections are handled inside the emitResponseCodes directive")
+          "If you want to see a response code emitted here, ensure that exceptions/rejections are handled inside the emitResponseCodes directive"
+        )
         result
     }
   }

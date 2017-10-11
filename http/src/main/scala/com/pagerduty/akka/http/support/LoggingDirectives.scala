@@ -18,7 +18,8 @@ trait LoggingDirectives {
         case result: Rejected =>
           log.error(s"Failed to complete request! Rejections were: ${result.rejections}")
           log.error(
-            "If you want to see a status code logged here, ensure that exceptions/rejections are handled inside the logRequestAndResult directive")
+            "If you want to see a status code logged here, ensure that exceptions/rejections are handled inside the logRequestAndResult directive"
+          )
           result
       }
     }

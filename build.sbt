@@ -12,9 +12,9 @@ lazy val sharedSettings = Seq(
   )
 )
 
-lazy val http = (project in file("http")).
-  settings(sharedSettings: _*).
-  settings(
+lazy val http = (project in file("http"))
+  .settings(sharedSettings: _*)
+  .settings(
     name := "akka-support-http",
     libraryDependencies ++= Seq(
       "org.slf4j" % "slf4j-api" % "1.7+",
@@ -23,13 +23,16 @@ lazy val http = (project in file("http")).
     )
   )
 
-lazy val root = Project(id = "root", base = file(".")).
-  dependsOn(http).
-  aggregate(http).
-  settings(sharedSettings ++ Seq(
-    publishLocal := {},
-    publish := {},
-    publishArtifact := false,
-    bintrayReleaseOnPublish := false
+lazy val root = Project(id = "root", base = file("."))
+  .dependsOn(http)
+  .aggregate(http)
+  .settings(
+    sharedSettings ++ Seq(
+      publishLocal := {},
+      publish := {},
+      publishArtifact := false,
+      bintrayReleaseOnPublish := false
+    )
   )
-)
+
+scalafmtOnCompile in ThisBuild := true
