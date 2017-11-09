@@ -28,16 +28,16 @@ trait MetricsDirectives {
   }
 
   /**
-    * This directive increments a metrics-api counter for every request. It tags each increment with the response code
+    * This directive increments a metrics-api counter for every response. It tags each increment with the response code
     * and any error type.
     *
-    * You might place this near the root of your routing tree to count all HTTP requests. Note that you should handle exceptions
+    * You might place this near the root of your routing tree to count all HTTP responses. Note that you should handle exceptions
     * and 404s lower in the tree if you want this directive to emit metrics for them. See [[GenericErrorHandling]] for useful handlers.
     *
     * @param metricName The name of the metric to increment
     * @param tags Any additional tags to include on the increment
     */
-  def emitRequestCount(metricName: String, tags: (String, String)*): Directive0 = {
+  def emitResponseCount(metricName: String, tags: (String, String)*): Directive0 = {
     mapRouteResult {
       case result: Complete =>
         val statusCode = result.response.status.intValue
@@ -48,8 +48,7 @@ trait MetricsDirectives {
         }
         val augmentedTags = tags ++ Seq(
           ("response_code", statusCode.toString),
-          ("response_error_type", responseErrorType),
-          ("http_protocol", result.response.protocol.value)
+          ("response_error_type", responseErrorType)
         )
         metrics.increment(metricName, augmentedTags: _*)
         result
@@ -59,6 +58,16 @@ trait MetricsDirectives {
           "If you want to see a response code emitted here, ensure that exceptions/rejections are handled inside the emitResponseCodes directive"
         )
         result
+    }
+  }
+
+  def emitRequestCount(metricName: String, tags: (String, String)*) : Directive0 = {
+    extractRequestContext.map { ctx =>
+      val req = ctx.request
+      val augmentedTags = tags ++ Seq(
+        ("http_protocol", req.protocol.value)
+      )
+      metrics.increment(metricName, augmentedTags: _*)
     }
   }
 
