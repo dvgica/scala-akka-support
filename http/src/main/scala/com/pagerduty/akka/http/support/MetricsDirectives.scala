@@ -48,7 +48,8 @@ trait MetricsDirectives {
         }
         val augmentedTags = tags ++ Seq(
           ("response_code", statusCode.toString),
-          ("response_error_type", responseErrorType)
+          ("response_error_type", responseErrorType),
+          ("http_protocol", result.response.protocol.value)
         )
         metrics.increment(metricName, augmentedTags: _*)
         result
