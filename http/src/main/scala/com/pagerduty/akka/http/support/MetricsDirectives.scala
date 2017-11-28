@@ -61,7 +61,7 @@ trait MetricsDirectives {
     }
   }
 
-  def emitRequestCount(metricName: String, tags: (String, String)*) : Directive0 = {
+  def emitRequestCount(metricName: String, tags: (String, String)*): Directive0 = {
     extractRequestContext.map { ctx =>
       val req = ctx.request
       val augmentedTags = tags ++ Seq(
