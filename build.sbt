@@ -17,7 +17,7 @@ lazy val http = (project in file("http"))
   .settings(
     name := "akka-support-http",
     libraryDependencies ++= Seq(
-      "org.slf4j" % "slf4j-api" % "1.+",
+      "org.slf4j" % "slf4j-api" % "1.7.+",
       "com.typesafe.akka" %% "akka-http" % "10.0.10",
       "com.pagerduty" %% "metrics-api" % "2.0.0"
     )
