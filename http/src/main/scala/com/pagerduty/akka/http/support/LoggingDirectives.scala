@@ -4,7 +4,7 @@ import akka.http.scaladsl.server.Directive0
 import akka.http.scaladsl.server.RouteResult.{Complete, Rejected}
 import org.slf4j.Logger
 
-trait LoggingDirectives {
+trait LoggingDirectives extends Logging {
   import akka.http.scaladsl.server.Directives._
 
   /**
@@ -16,6 +16,8 @@ trait LoggingDirectives {
   def logRequestAndResponse: Directive0 = {
     extractRequestContext.flatMap { ctx =>
       val req = ctx.request
+      implicit val reqCtx = RequestContext.fromRequest(req)
+
       log.info(s"Received request: ${req.method.value} ${req.uri}")
       mapRouteResult {
         case result: Complete =>
@@ -31,5 +33,10 @@ trait LoggingDirectives {
     }
   }
 
-  def log: Logger
+  val addXRequestId = mapRequest { req =>
+    RequestIdHeader.extractRequestId(req) match {
+      case Some(_) => req
+      case _ => req.addHeader(RequestIdHeader(java.util.UUID.randomUUID.toString))
+    }
+  }
 }
