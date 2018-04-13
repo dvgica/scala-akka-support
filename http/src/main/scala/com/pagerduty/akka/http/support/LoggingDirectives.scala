@@ -2,9 +2,8 @@ package com.pagerduty.akka.http.support
 
 import akka.http.scaladsl.server.Directive0
 import akka.http.scaladsl.server.RouteResult.{Complete, Rejected}
-import org.slf4j.Logger
 
-trait LoggingDirectives extends Logging {
+trait LoggingDirectives extends MetadataLogging {
   import akka.http.scaladsl.server.Directives._
 
   /**
@@ -16,7 +15,7 @@ trait LoggingDirectives extends Logging {
   def logRequestAndResponse: Directive0 = {
     extractRequestContext.flatMap { ctx =>
       val req = ctx.request
-      implicit val reqCtx = RequestContext.fromRequest(req)
+      implicit val reqMeta = RequestMetadata.fromRequest(req)
 
       log.info(s"Received request: ${req.method.value} ${req.uri}")
       mapRouteResult {
@@ -30,13 +29,6 @@ trait LoggingDirectives extends Logging {
           )
           result
       }
-    }
-  }
-
-  val addXRequestId = mapRequest { req =>
-    RequestIdHeader.extractRequestId(req) match {
-      case Some(_) => req
-      case _ => req.addHeader(RequestIdHeader(java.util.UUID.randomUUID.toString))
     }
   }
 }

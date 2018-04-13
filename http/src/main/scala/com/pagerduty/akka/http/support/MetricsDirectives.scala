@@ -4,7 +4,7 @@ import akka.http.scaladsl.server.Directive0
 import akka.http.scaladsl.server.RouteResult.{Complete, Rejected}
 import com.pagerduty.metrics.{Metrics, Stopwatch}
 
-trait MetricsDirectives extends Logging {
+trait MetricsDirectives extends MetadataLogging {
   import akka.http.scaladsl.server.directives.BasicDirectives._
 
   /**
@@ -39,7 +39,7 @@ trait MetricsDirectives extends Logging {
   def emitResponseCount(metricName: String, tags: (String, String)*): Directive0 = {
     extractRequestContext.flatMap { ctx =>
       val req = ctx.request
-      implicit val reqCtx = RequestContext.fromRequest(req)
+      implicit val reqMeta = RequestMetadata.fromRequest(req)
 
       mapRouteResult {
         case result: Complete =>

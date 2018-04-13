@@ -5,7 +5,7 @@ import akka.http.scaladsl.server.Directives.{complete, extractRequest}
 import akka.http.scaladsl.server.{ExceptionHandler, RejectionHandler}
 import com.pagerduty.metrics.Metrics
 
-trait GenericErrorHandling extends Logging {
+trait GenericErrorHandling extends MetadataLogging {
 
   /**
     * Useful for catching and completing unhandled exceptions before they propagate through logging or metrics directives.
@@ -13,7 +13,7 @@ trait GenericErrorHandling extends Logging {
   lazy val exceptionHandler = ExceptionHandler {
     case e =>
       extractRequest { req =>
-        implicit val reqCtx = RequestContext.fromRequest(req)
+        implicit val reqMeta = RequestMetadata.fromRequest(req)
 
         metrics.increment("server_error", ("exception", e.getClass.getSimpleName))
         log.error(s"Exception handling request: $e")
