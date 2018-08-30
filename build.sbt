@@ -23,16 +23,5 @@ lazy val http = (project in file("http"))
     )
   )
 
-lazy val root = Project(id = "root", base = file("."))
-  .dependsOn(http)
-  .aggregate(http)
-  .settings(
-    sharedSettings ++ Seq(
-      publishLocal := {},
-      publish := {},
-      publishArtifact := false,
-      bintrayReleaseOnPublish := false
-    )
-  )
-
 scalafmtOnCompile in ThisBuild := true
+skip in publish := true
