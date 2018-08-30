@@ -5,6 +5,8 @@ import akka.http.scaladsl.server.Directives.{complete, extractRequest}
 import akka.http.scaladsl.server.{ExceptionHandler, RejectionHandler}
 import com.pagerduty.metrics.Metrics
 
+import java.io.{PrintWriter, StringWriter}
+
 trait GenericErrorHandling extends MetadataLogging {
 
   /**
@@ -17,6 +19,11 @@ trait GenericErrorHandling extends MetadataLogging {
 
         metrics.increment("server_error", ("exception", e.getClass.getSimpleName))
         log.error(s"Exception handling request: $e")
+
+        val sw = new StringWriter
+        e.printStackTrace(new PrintWriter(sw))
+        log.error(s"Request stack trace: ${sw.toString}")
+
         complete(HttpResponse(status = StatusCodes.InternalServerError))
       }
   }
