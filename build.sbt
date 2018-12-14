@@ -1,27 +1,27 @@
-lazy val sharedSettings = Seq(
-  organization := "com.pagerduty",
-  scalaVersion := "2.11.11",
-  crossScalaVersions := Seq("2.11.11", "2.12.2"),
-  licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html")),
-  bintrayOrganization := Some("pagerduty"),
-  bintrayRepository := "oss-maven",
-  publishMavenStyle := true,
-  resolvers := Seq(
-    "bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
-    Resolver.defaultLocal
-  )
+organization := "com.pagerduty"
+
+name := "akka-support-http"
+
+scalaVersion := "2.11.11"
+
+crossScalaVersions := Seq("2.11.11", "2.12.2")
+
+licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+
+bintrayOrganization := Some("pagerduty")
+bintrayRepository := "oss-maven"
+
+publishMavenStyle := true
+
+resolvers := Seq(
+"bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
+Resolver.defaultLocal
 )
 
-lazy val http = (project in file("http"))
-  .settings(sharedSettings: _*)
-  .settings(
-    name := "akka-support-http",
-    libraryDependencies ++= Seq(
-      "org.slf4j" % "slf4j-api" % "1.7.+",
-      "com.typesafe.akka" %% "akka-http" % "10.0.10",
-      "com.pagerduty" %% "metrics-api" % "2.0.0"
-    )
-  )
+libraryDependencies ++= Seq(
+  "org.slf4j" % "slf4j-api" % "1.7.+",
+  "com.typesafe.akka" %% "akka-http" % "10.0.10",
+  "com.pagerduty" %% "metrics-api" % "2.0.0"
+)
 
 scalafmtOnCompile in ThisBuild := true
-skip in publish := true
