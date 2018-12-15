@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/PagerDuty/scala-akka-support.svg?branch=master)](https://travis-ci.org/PagerDuty/scala-akka-support)
-
-# Akka Support
+# Akka Support [![CircleCI](https://circleci.com/gh/PagerDuty/scala-akka-support.svg?style=svg)](https://circleci.com/gh/PagerDuty/scala-akka-support)
 
 This library is a collection of useful additions to the Akka ecosystem. Specifically, it contains the following:
 
