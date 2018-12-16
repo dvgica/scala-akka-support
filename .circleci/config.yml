@@ -79,13 +79,13 @@ jobs:
   test_211:
     executor:
       name: scala/scala_executor
-      scala_version: 2.11.11
+      scala_version: 2.11.12
     steps:
       - test
   test_212:
     executor:
       name: scala/scala_executor
-      scala_version: 2.12.2
+      scala_version: 2.12.8
     steps:
       - test
 
