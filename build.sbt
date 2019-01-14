@@ -14,8 +14,8 @@ bintrayRepository := "oss-maven"
 publishMavenStyle := true
 
 resolvers := Seq(
-"bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
-Resolver.defaultLocal
+  "bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
+  Resolver.defaultLocal
 )
 
 libraryDependencies ++= Seq(
