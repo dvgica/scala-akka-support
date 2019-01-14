@@ -14,13 +14,13 @@ bintrayRepository := "oss-maven"
 publishMavenStyle := true
 
 resolvers := Seq(
-"bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
-Resolver.defaultLocal
+  "bintray-pagerduty-oss-maven" at "https://dl.bintray.com/pagerduty/oss-maven",
+  Resolver.defaultLocal
 )
 
 libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "1.7.+",
-  "com.typesafe.akka" %% "akka-http" % "10.0.10",
+  "com.typesafe.akka" %% "akka-http" % "10.1.7",
   "com.pagerduty" %% "metrics-api" % "2.0.0"
 )
 
