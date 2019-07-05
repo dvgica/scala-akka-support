@@ -28,17 +28,7 @@ orbs:
                 - v1-dependencies-{{ checksum "build.sbt" }}-{{ checksum "project/plugins.sbt" }}-{{ checksum ".circleci/config.yml" }}
                 # Fallback to using the latest cache if no exact match is found
                 - v1-dependencies-
-      setup_sbt:
-        steps:
-          - run:
-              name: Setup SBT
-              command: |
-                mkdir -p ~/.sbt/0.13/plugins/
-                cp .circleci/{repositories,credentials} ~/.sbt
-                cp .circleci/credentials.sbt ~/.sbt/0.13/plugins/credentials.sbt
-                cp .circleci/publish.sbt ~/.sbt/0.13/publish.sbt 2>/dev/null || true
-                sed -i "s|%{user}|$ARTIFACTORY_USER|" ~/.sbt/credentials
-                sed -i "s|%{password}|$ARTIFACTORY_API_KEY|" ~/.sbt/credentials
+
       save_sbt_cache:
         steps:
           - save_cache:
@@ -58,14 +48,14 @@ commands:
       - scala/restore_sbt_cache
       - run:
           name: Check formatting with Scalafmt
-          command: SBT_CREDENTIALS=~/.sbt/credentials sbt ++$SCALA_VERSION -Dsbt.override.build.repos=true scalafmt::test test:scalafmt::test
+          command: sbt ++$SCALA_VERSION scalafmtCheckAll
       - run:
           name: Compile
-          command: SBT_CREDENTIALS=~/.sbt/credentials sbt ++$SCALA_VERSION -Dsbt.override.build.repos=true test:compile
+          command: sbt ++$SCALA_VERSION compile
       - scala/save_sbt_cache
       - run:
           name: Run unit and integration tests
-          command: SBT_CREDENTIALS=~/.sbt/credentials sbt ++$SCALA_VERSION -Dsbt.override.build.repos=true test
+          command: sbt ++$SCALA_VERSION test
 
   publish:
     steps:
@@ -88,6 +78,12 @@ jobs:
       scala_version: 2.12.8
     steps:
       - test
+  test_213:
+    executor:
+      name: scala/scala_executor
+      scala_version: 2.13.0
+    steps:
+      - test
 
   publish:
     docker:
@@ -103,11 +99,14 @@ workflows:
           context: PagerDuty
       - test_212:
           context: PagerDuty
+      - test_213:
+          context: PagerDuty
 
       - publish:
           requires:
             - test_211
             - test_212
+            - test_213
           context: PagerDuty
           filters:
             branches:

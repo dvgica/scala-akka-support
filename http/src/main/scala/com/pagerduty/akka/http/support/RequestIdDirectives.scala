@@ -6,7 +6,7 @@ trait RequestIdDirectives {
   val addXRequestId = mapRequest { req =>
     RequestIdHeader.extractRequestId(req) match {
       case Some(_) => req
-      case _ => req.addHeader(RequestIdHeader(java.util.UUID.randomUUID.toString))
+      case _       => req.addHeader(RequestIdHeader(java.util.UUID.randomUUID.toString))
     }
   }
 }
