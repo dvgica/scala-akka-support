@@ -47,7 +47,7 @@ trait MetricsDirectives extends MetadataLogging {
           val responseErrorType = statusCode match {
             case i if i >= 400 && i <= 499 => "client"
             case i if i >= 500 && i <= 599 => "server"
-            case _ => "none"
+            case _                         => "none"
           }
           val augmentedTags = tags ++ Seq(
             ("response_code", statusCode.toString),
